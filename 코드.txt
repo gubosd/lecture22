@@ -5,3 +5,9 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import load_breast_cancer
 cancer = load_breast_cancer()
 
+from sklearn.svm import SVC
+
+X = cancer.data[:, :2]
+y = cancer.target
+
+plt.scatter(X[:,0], X[:,1], c=y, alpha=0.2)
