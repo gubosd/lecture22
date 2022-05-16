@@ -61,3 +61,56 @@ s = X_train.std(axis=0)
 
 X_train_norm = (X_train-m)/s
 X_test_norm = (X_test-m)/s
+
+
+
+<결정트리>
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_breast_cancer
+cancer = load_breast_cancer()
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(cancer.data, cancer.target)
+
+X_train = X_train[:, :2]
+X_test = X_test[:, :2]
+
+from sklearn.tree import DecisionTreeClassifier
+
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+train_score = model.score(X_train, y_train)
+test_score  = model.score(X_test, y_test)
+print(train_score, test_score)
+
+import mglearn
+
+plt.figure(figsize=[10,8])
+mglearn.plots.plot_2d_classification(model, X_train, alpha=0.5)
+mglearn.discrete_scatter(X_train[:,0], X_train[:,1], y_train)
+plt.xlabel(cancer.feature_names[0])
+plt.ylabel(cancer.feature_names[1])
+plt.legend(loc=4)
+
+아나콘다 프롬프터에서, "pip install graphviz" 실행
+http://www.graphviz.org 에서 "graphviz-3.0.0 (64-bit) EXE installer" 다운로드 및 설치
+설치시, PATH 에 추가 옵션 설정 (설정시 아래 3번은 자동으로 처리됨)
+
+"C:\Program Files\Graphviz\bin" 을 윈도우 PATH 에 추가
+기존에 떠 있던 아나콘다 프롬프트를 모두 닫고 jupyter notebook 재실행
+
+from sklearn.tree import export_graphviz
+
+export_graphviz(model, out_file='tree.dot', class_names=cancer.target_names,
+                feature_names=cancer.feature_names[:2], impurity=False, filled=True)
+                
+import graphviz
+
+with open('tree.dot') as f:
+    dot_graph=f.read()
+display(graphviz.Source(dot_graph))
