@@ -11,3 +11,13 @@ X = cancer.data[:, :2]
 y = cancer.target
 
 plt.scatter(X[:,0], X[:,1], c=y, alpha=0.2)
+
+model = SVC(probability=True) # probability: 확률점수 계산
+model.fit(X, y)
+model.score(X, y)
+
+import mglearn
+#mglearn.plots.plot_2d_classification(model, X, fill=True, eps=0.5, alpha=0.4)
+mglearn.plots.plot_2d_separator(model, X, fill=True, eps=0.5, alpha=0.4)
+mglearn.discrete_scatter(X[:,0], X[:,1], y, alpha=0.2)
+plt.legend(loc=4)
