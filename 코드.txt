@@ -53,3 +53,11 @@ plt.colorbar(CS,shrink=0.5)
 plt.xlabel(cancer.feature_names[0])
 plt.ylabel(cancer.feature_names[1])
 plt.title('SVM - decision bounds',fontsize=20)
+
+
+# 정규화
+m = X_train.mean(axis=0)
+s = X_train.std(axis=0)
+
+X_train_norm = (X_train-m)/s
+X_test_norm = (X_test-m)/s
