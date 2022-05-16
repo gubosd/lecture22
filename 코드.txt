@@ -21,3 +21,35 @@ import mglearn
 mglearn.plots.plot_2d_separator(model, X, fill=True, eps=0.5, alpha=0.4)
 mglearn.discrete_scatter(X[:,0], X[:,1], y, alpha=0.2)
 plt.legend(loc=4)
+
+xmax = X[:,0].max()+1
+xmin = X[:,0].min()-1
+ymax = X[:,1].max()+1
+ymin = X[:,1].min()-1
+
+xx=np.linspace(xmin,xmax,200)
+yy=np.linspace(ymin,ymax,200)
+data1, data2 = np.meshgrid(xx,yy)
+X_grid = np.c_[data1.ravel(), data2.ravel()]
+decision_values = model.predict_proba(X_grid)[:,0] # 등고선을 위해 확률점수를 구함
+
+sv=model.support_vectors_
+
+fig=plt.figure(figsize=[14,12])
+
+# show probability countour
+CS=plt.contour(data1,data2,decision_values.reshape(data1.shape),levels=[0.01, 0.1, 0.2, 0.5, 0.8, 0.9, 0.99])
+plt.clabel(CS, inline=2, fontsize=10)
+
+# show support vectors
+plt.scatter(sv[:,0], sv[:,1], marker='s', c= 'k', s=100)
+
+# show train samples
+plt.scatter(X[:,0][y==0],X[:,1][y==0],marker='o',c='r',label='malignant')
+plt.scatter(X[:,0][y==1],X[:,1][y==1],marker='^',c='y',label='benign')
+
+plt.legend()
+plt.colorbar(CS,shrink=0.5)
+plt.xlabel(cancer.feature_names[0])
+plt.ylabel(cancer.feature_names[1])
+plt.title('SVM - decision bounds',fontsize=20)
