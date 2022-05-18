@@ -1,3 +1,5 @@
+https://github.com/rickiepark/introduction_to_ml_with_python/blob/master/data/aclImdb_v1.tar.gz
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
